@@ -13,8 +13,6 @@
         <module>payment-service</module>
         <module>order-service</module>
         <module>api-gateway</module>
-        <module>eureka-client</module>
-        <module>eureka-server</module>
     </modules>
 
     <properties>
