@@ -10,9 +10,12 @@
 
     <modules>
         <module>ticket-service</module>
-        <module>payment-service</module>
         <module>order-service</module>
+        <module>ticket-service</module>
+        <module>payment-service</module>
         <module>api-gateway</module>
+        <module>service-registry</module>
+        <module>config-service</module>
     </modules>
 
     <properties>
@@ -28,6 +31,10 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

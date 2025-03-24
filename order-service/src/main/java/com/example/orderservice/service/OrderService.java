@@ -2,23 +2,24 @@ package com.example.orderservice.service;
 
 import com.example.orderservice.model.Order;
 import com.example.orderservice.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
+
     private final OrderRepository orderRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
-
+    @Transactional
     public Order createOrder(Order order) {
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        kafkaTemplate.send("order-created", "Order created: " + savedOrder.getId());
+
+        return savedOrder;
     }
 }
