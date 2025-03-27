@@ -1,9 +1,9 @@
 package com.example.orderservice.service;
 
+import com.example.orderservice.kafka.KafkaProducerService;
 import com.example.orderservice.model.Order;
 import com.example.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,13 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaProducerService kafkaProducerService;
 
     @Transactional
     public Order createOrder(Order order) {
+        order.setStatus("NEW");
         Order savedOrder = orderRepository.save(order);
 
-        kafkaTemplate.send("order-created", "Order created: " + savedOrder.getId());
+        kafkaProducerService.sendMessage("order-topic", "Order created: " + savedOrder.getId());
 
         return savedOrder;
     }

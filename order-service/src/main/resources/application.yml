@@ -1,31 +1,31 @@
-spring:
-  application:
-    name: order-service
-  config:
-    import: "optional:configserver:http://localhost:8888"
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/orders_db
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
-
-  jpa:
-    database: postgresql
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
-  kafka:
-    bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
 server:
   port: 8081
 
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_db
+    username: order_user
+    password: order_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    bootstrap-servers: localhost:9092
+
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+
 eureka:
   client:
-    serviceUrl:
+    service-url:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

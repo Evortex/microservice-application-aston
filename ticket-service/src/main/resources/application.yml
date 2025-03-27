@@ -1,36 +1,30 @@
+server:
+  port: 8083
+
 spring:
   application:
     name: ticket-service
-  config:
-    import: "optional:configserver:http://localhost:8888"
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/tickets_db
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://ticket-db:5432/ticket_db
+    username: ticket_user
+    password: ticket_password
     driver-class-name: org.postgresql.Driver
 
   jpa:
-    database: postgresql
-    show-sql: true
     hibernate:
       ddl-auto: update
+    show-sql: true
 
   kafka:
-    bootstrap-servers: localhost:9092
     consumer:
+      bootstrap-servers: kafka:9092
       group-id: ticket-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
-server:
-  port: 8083
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka

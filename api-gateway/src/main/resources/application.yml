@@ -1,5 +1,5 @@
 server:
-  port: 8086
+  port: 8087
 
 spring:
   application:
@@ -7,22 +7,23 @@ spring:
 
   cloud:
     gateway:
+      routes:
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/orders/**
+
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/api/payments/**
+
+        - id: ticket-service
+          uri: lb://TICKET-SERVICE
+          predicates:
+            - Path=/api/tickets/*
+
       discovery:
-        routes:
-          - id: order-service
-            uri: lb://order-service
-            predicates:
-              - Path=/orders/**
-
-          - id: ticket-service
-            uri: lb://ticket-service
-            predicates:
-              - Path=/tickets/**
-
-          - id: payment-service
-            uri: lb://payment-service
-            predicates:
-              - Path=/payments/**
         locator:
           enabled: true
           lower-case-service-id: true
@@ -30,7 +31,14 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 logging:
   pattern:

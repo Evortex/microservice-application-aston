@@ -8,11 +8,17 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/Evortex/config-repo.git
+          uri: https://github.com/Evortex/config-repo
+          default-label: main
           clone-on-start: true
-          search-paths: "{application}"
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -13,9 +13,9 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping
-    public ResponseEntity<Payment> makePayment(@RequestBody Payment payment) {
-        Payment savedPayment = paymentService.processPayment(payment);
-        return ResponseEntity.ok(savedPayment);
+    @PostMapping("/process")
+    public ResponseEntity<Payment> processPayment(@RequestParam double amount) {
+        Payment payment = paymentService.processPayment(amount);
+        return ResponseEntity.ok(payment);
     }
 }
